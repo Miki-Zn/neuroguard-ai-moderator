@@ -28,4 +28,4 @@ NeuroGuard is a high-performance, asynchronous SaaS API designed for automated c
    cd neuroguard-ai-moderator
 
 2. Build and run with Docker:
-```docker-compose up --build
+   ```docker-compose up --build
