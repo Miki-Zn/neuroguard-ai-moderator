@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import environ
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,6 +14,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ['*']
+OPENAI_API_KEY = env('OPENAI_API_KEY', default='')
 
 # Application definition
 INSTALLED_APPS = [
@@ -116,4 +118,9 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Infrastructure for future automated daily cron jobs (Celery Beat)
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE = {
+    'daily-system-maintenance': {
+        'task': 'moderation.tasks.daily_maintenance_script',
+        'schedule': crontab(minute=0, hour=0), # Executes daily at midnight
+    },
+}
