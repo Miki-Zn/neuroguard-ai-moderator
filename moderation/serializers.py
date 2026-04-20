@@ -11,7 +11,7 @@ class ContentItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContentItem
-        fields = ['id', 'text_content', 'image_url', 'status', 'created_at', 'result']
+        fields = ['id', 'text_content', 'image_url', 'webhook_url', 'status', 'created_at', 'result']
         read_only_fields = ['status', 'created_at']
 
     def validate(self, data):

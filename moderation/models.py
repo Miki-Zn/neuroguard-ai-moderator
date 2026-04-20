@@ -12,6 +12,7 @@ class ContentItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='content_items')
     text_content = models.TextField(blank=True, null=True, help_text="Text to be moderated")
     image_url = models.URLField(blank=True, null=True, help_text="URL of the image to be moderated")
+    webhook_url = models.URLField(blank=True, null=True, help_text="Optional URL to receive async callback upon completion")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
