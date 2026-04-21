@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
     
     # Local apps
     'users',
@@ -92,6 +93,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',
@@ -123,4 +125,13 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'moderation.tasks.daily_maintenance_script',
         'schedule': crontab(minute=0, hour=0), # Executes daily at midnight
     },
+}
+
+# --- OpenAPI / Swagger Documentation Settings ---
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'NeuroGuard AI Moderation API',
+    'DESCRIPTION': 'High-performance asynchronous API for automated content moderation using OpenAI.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
 }

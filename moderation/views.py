@@ -4,10 +4,17 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 from datetime import timedelta
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from .models import ContentItem
 from .serializers import ContentItemSerializer
 from .tasks import process_content_task
+
+@extend_schema_view(
+    list=extend_schema(description="Get a list of all moderation requests for the current user."),
+    create=extend_schema(description="Submit a new text or image URL for asynchronous AI moderation."),
+    retrieve=extend_schema(description="Get the detailed status and result of a specific moderation request.")
+)
 
 class ContentItemViewSet(viewsets.ModelViewSet):
     serializer_class = ContentItemSerializer
@@ -22,7 +29,8 @@ class ContentItemViewSet(viewsets.ModelViewSet):
 
 class AnalyticsView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
-
+    
+    @extend_schema(description="Get overall metrics and a 7-day trend of moderation activity.")
     def get(self, request):
         user = request.user
         seven_days_ago = timezone.now() - timedelta(days=7)
